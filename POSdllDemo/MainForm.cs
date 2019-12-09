@@ -9,8 +9,10 @@ using System.Windows.Forms;
 namespace GprinterDEMO
 {
     public partial class MainForm : Form
+
     {
         private static List<Printer> list;
+        private static Configer config;
 
         internal static List<Printer> List { get => list; set => list = value; }
 
@@ -41,7 +43,7 @@ namespace GprinterDEMO
             FrameHelper.AutoSizeColumn(this.dataGridView1);
 
             // 获取本地的配置文件
-            Configer config = GetLocalConfig();
+            config = GetLocalConfig();
             foreach (Printer printer in config.Printers)
             {
                 int index = this.dataGridView1.Rows.Add();
@@ -53,6 +55,7 @@ namespace GprinterDEMO
                 
             }
             Console.WriteLine("监听mqtt消息");
+            Mqtt.StartMqttService();
 
         }
 

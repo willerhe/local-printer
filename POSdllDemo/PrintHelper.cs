@@ -118,6 +118,11 @@ namespace GprinterDEMO
 
         }
 
+        internal static void SmartPrinter(string v)
+        {
+            USBPrinter(null);
+            NetworkPrinter(null);
+        }
 
         private static void SendData2USB(byte[] str)
         {
