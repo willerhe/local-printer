@@ -39,6 +39,7 @@ namespace GprinterDEMO
         // 初始化数据
         internal void InitData()
         {
+            this.notifyIcon1.Visible = true;
             Console.WriteLine("加载本地打印机");
             FrameHelper.AutoSizeColumn(this.dataGridView1);
 
@@ -115,6 +116,11 @@ namespace GprinterDEMO
                 // 测试打印
                 
             }
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
         }
     }
 }
