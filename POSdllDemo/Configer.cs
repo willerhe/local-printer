@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace GprinterDEMO
 {
     class Configer
     {
-        private string topic;
-        private List<Printer> printers;
+        public string Topic;
+        public string Token;
+        public List<Printer> Printers;
 
+        public Configer(string topic, string token, List<Printer> printers)
+        {
+            this.Topic = topic;
+            this.Token = token;
+            this.Printers = printers;
+        }
         public Configer()
         {
         }
 
-        public Configer(string topic, List<Printer> printers)
-        {
-            this.topic = topic;
-            this.printers = printers;
-        }
-
-        public string Topic { get => topic; set => topic = value; }
-        internal List<Printer> Printers { get => printers; set => printers = value; }
+     
     }
 }

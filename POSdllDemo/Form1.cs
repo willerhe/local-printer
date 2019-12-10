@@ -1,9 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Text;
 using System.IO.Ports;
@@ -71,7 +67,6 @@ namespace POSdllDemo
         			string strParInfo="无";
         			string strUSBInfo="USB2.0协议";
         			string strWirelessInfo="无";
-        			string strNetInfo="无";
         			
         			string strSend;
         			byte[] SendData={0x1b,0x61,0x01,0x1b,0x21,0x30,0x1c,0x57,0x01};

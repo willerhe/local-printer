@@ -68,7 +68,7 @@
             // checkBox_remember_me
             // 
             this.checkBox_remember_me.AutoSize = true;
-            this.checkBox_remember_me.Location = new System.Drawing.Point(314, 336);
+            this.checkBox_remember_me.Location = new System.Drawing.Point(331, 326);
             this.checkBox_remember_me.Name = "checkBox_remember_me";
             this.checkBox_remember_me.Size = new System.Drawing.Size(72, 16);
             this.checkBox_remember_me.TabIndex = 3;

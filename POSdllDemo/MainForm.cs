@@ -12,7 +12,6 @@ namespace GprinterDEMO
 
     {
         private static List<Printer> list;
-        private static Configer config;
 
         internal static List<Printer> List { get => list; set => list = value; }
 
@@ -44,12 +43,11 @@ namespace GprinterDEMO
             FrameHelper.AutoSizeColumn(this.dataGridView1);
 
             // 获取本地的配置文件
-            config = GetLocalConfig();
-            foreach (Printer printer in config.Printers)
+            foreach (Printer printer in DB.DataSet.Printers)
             {
                 int index = this.dataGridView1.Rows.Add();
-                this.dataGridView1.Rows[index].Cells[0].Value = printer.Name1 ;
-                this.dataGridView1.Rows[index].Cells[1].Value = printer.Type1;
+                this.dataGridView1.Rows[index].Cells[0].Value = printer.PrintName ;
+                this.dataGridView1.Rows[index].Cells[1].Value = printer.PrintType;
                 this.dataGridView1.Rows[index].Cells[2].Value = "正常";
                 this.dataGridView1.Rows[index].Cells[3].Value = "测试";
                 this.dataGridView1.Rows[index].Cells[4].Value = "删除";
@@ -65,7 +63,7 @@ namespace GprinterDEMO
         {
             
             
-            list = new List<Printer>();
+            /*list = new List<Printer>();
             string name = "USB打印机";
             string type = "USB";
             string iP = "";
@@ -81,9 +79,8 @@ namespace GprinterDEMO
             list.Add(p1);
             list.Add(p2);
 
-            Configer configer = new Configer("prod/printer/10009",list);
-
-            return configer;
+            Configer configer = new Configer("","prod/printer/10009",list);*/
+            return DB.DataSet;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -104,14 +101,14 @@ namespace GprinterDEMO
 
             if(e.ColumnIndex == 3)
             {
-                Printer p = list[e.RowIndex];
-                if(p.Type1 == "USB")
+                Printer p = DB.DataSet.Printers[e.RowIndex];
+                if(p.PrintType == "USB")
                 {
-                    PrintHelper.USBPrinter(p);
+                    PrintHelper.USBPrinterTest(p);
                 }
-                else if (p.Type1 == "NETWORK")
+                else if (p.PrintType == "NETWORK")
                 {
-                    PrintHelper.NetworkPrinter(p);
+                    PrintHelper.NetworkPrinterTest(p);
                 }
                 // 测试打印
                 

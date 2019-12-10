@@ -31,21 +31,28 @@ namespace POSdllDemo
              {
                 // 如果是管理员，则直接运行
                 // todo 如果有登录凭证  直接跳转到首页面
-                loginForm = new Login();
-                 Application.Run(loginForm);
-                // loginForm.ShowDialog();
-                // 登录成功跳转到登录页面
-                if (loginForm.DialogResult == DialogResult.OK)
+                bool throuth = false;
+                DB.SyncConfigFile();
+                if (DB.DataSet.Token == null||DB.DataSet.Token.Length < 1)
                 {
-                    loginForm.Dispose();
-                    mainForm = new MainForm();
-                    mainForm.InitData();
-                    Application.Run(mainForm);
+                    loginForm = new Login();
+                    Application.Run(loginForm);
                 }
                 else
                 {
-                    loginForm.EmptyAllTextBoxs();
-                    MessageBox.Show("账号/密码错误,请重新输入！");
+                    throuth = true;
+                }
+                // loginForm.ShowDialog();
+                // 登录成功跳转到登录页面
+                if (throuth ||loginForm.DialogResult == DialogResult.OK )
+                {
+                    if (!throuth)
+                    {
+                        loginForm.Dispose();
+                    }
+                    mainForm = new MainForm();
+                    mainForm.InitData();
+                    Application.Run(mainForm);
                 }
              }
              else

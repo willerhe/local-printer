@@ -1,0 +1,5 @@
+﻿{
+	"token":"",
+	"topic":"",
+	"printers":[{"name:"printer1""}]
+}
