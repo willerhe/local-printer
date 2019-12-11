@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace GprinterDEMO
@@ -41,7 +37,7 @@ namespace GprinterDEMO
             this.notifyIcon1.Visible = true;
             Console.WriteLine("加载本地打印机");
             FrameHelper.AutoSizeColumn(this.dataGridView1);
-
+            this.dataGridView1.AllowUserToAddRows = false;
             // 获取本地的配置文件
             foreach (Printer printer in DB.DataSet.Printers)
             {
@@ -50,8 +46,6 @@ namespace GprinterDEMO
                 this.dataGridView1.Rows[index].Cells[1].Value = printer.PrintType;
                 this.dataGridView1.Rows[index].Cells[2].Value = "正常";
                 this.dataGridView1.Rows[index].Cells[3].Value = "测试";
-                this.dataGridView1.Rows[index].Cells[4].Value = "删除";
-                
             }
             Console.WriteLine("监听mqtt消息");
             Mqtt.StartMqttService();

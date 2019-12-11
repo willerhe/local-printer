@@ -22,10 +22,11 @@ namespace GprinterDEMO
         static void messageReceive(object sender, MqttMsgPublishEventArgs e)
         {
             string msg = "Topic:" + e.Topic + "   Message:" + System.Text.Encoding.Default.GetString(e.Message);
-            Dictionary<string, Object> message = new Dictionary<string, Object>();
+           
+
 
             Console.WriteLine(msg);
-            PrintHelper.SmartPrinter(System.Text.Encoding.Default.GetString(e.Message));
+            PrintHelper.SmartPrinter(System.Text.Encoding.UTF8.GetString(e.Message));
         }
     }
 }

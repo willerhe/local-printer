@@ -1,4 +1,5 @@
 ﻿using GprinterTest;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,7 @@ namespace GprinterDEMO
 
 
 
-        public static void USBPrinter(Printer p, Dictionary<string, object> order)
+        public static void USBPrinter(Printer p, string[] contents)
         {
             
             NewUsb.FindUSBPrinter();
@@ -34,58 +35,22 @@ namespace GprinterDEMO
                     SendData2USB(SendData);
 
                     // 桌号
-                    string strSendData = (string)order[""] + "号桌";
+                    string strSendData = contents[0];
                     SendData2USB(strSendData);
-
                     SendData2USB(new byte[] { 0x0a, 0x0a });
                     SendData2USB(new byte[] { 0x1b, 0x61, 0x00, 0x1b, 0x21, 0x00, 0x1c, 0x57, 0x00 });
-                    SendData2USB("名称      单价   数量  金额");
-                    SendData2USB(enddata);
-                    SendData2USB("---------------------------");
-                    SendData2USB(enddata);
-                    SendData2USB("烤包子    11      11    11");
-                    SendData2USB(enddata);
-                    SendData2USB("---------------------------");
-                    SendData2USB(enddata);
-                    SendData2USB("合计：111元");
+                    for (int ii = 1; ii < contents.Length; ii++)
+                    {
+                        SendData2USB(contents[ii]);
+                        SendData2USB(enddata);
+                    }
+
                     SendData2USB(enddata);
                     SendData2USB(enddata);
                     SendData2USB(enddata);
                     SendData2USB(enddata);
                     SendData2USB(enddata);
                     #endregion
-
-                    /*#region 字体打印测试
-                    SendData2USB(KanjiMode);
-                    SendData = new byte[16];
-                    int linecount = 3;
-                    byte bit = 0xa1, Zone = 0xa1;
-                    for (i = 0; i < 16; i += 2)
-                    {
-                        SendData[i] = Zone;
-                        SendData[i + 1] = bit;
-                        bit++;
-                    }
-                    SendData2USB(enddata);
-                    SendData2USB(SendData);
-
-                    Zone = 0xb0;
-                    bit = 0xa1;
-                    for (i = 0; i < linecount; i++)
-                    {
-                        for (int j = 0; j < 16; j += 2)
-                        {
-                            SendData[j] = Zone;
-                            SendData[j + 1] = bit;
-                            Zone++;
-                        }
-                        bit++;
-                        SendData2USB(enddata);
-                        SendData2USB(SendData);
-                    }
-                    SendData2USB(enddata);
-                    SendData2USB(enddata);
-                    #endregion*/
 
                     SendData2USB(new byte[] { 0x10, 0x04, 0x01 });//查询状态
                     byte[] readData = new byte[] { };
@@ -170,15 +135,18 @@ namespace GprinterDEMO
                 byte[] by_SendData = System.Text.Encoding.Default.GetBytes("test print\r\n");
                 LoadPOSDll.POS_WriteFile(PosPrint.POS_IntPtr, by_SendData, (uint)by_SendData.Length);
                 LoadPOSDll.POS_WriteFile(PosPrint.POS_IntPtr, new byte[] { 0x0a }, 1);
+                LoadPOSDll.POS_CutPaper(1,1);
                 LoadPOSDll.POS_EndDoc();
             }
         }
 
         internal static void SmartPrinter(string v)
         {
-            Dictionary<string,Object> order =  Strconv.String2Dict(v);
-            USBPrinter(null,order);
-            NetworkPrinter(null, order);
+
+            string[] contents = JsonConvert.DeserializeObject<string[]>(v);
+
+            USBPrinter(null, contents);
+            NetworkPrinter(null, contents);
         }
 
         private static void SendData2USB(byte[] str)
@@ -191,7 +159,7 @@ namespace GprinterDEMO
             SendData2USB(by_SendData);
         }
 
-        public static void NetworkPrinter(Printer p, Dictionary<string, object> order)
+        public static void NetworkPrinter(Printer p, string[] contents)
         {
             Console.WriteLine("网口测试");
             LoadPOSDll PosPrint = new LoadPOSDll();
@@ -211,9 +179,15 @@ namespace GprinterDEMO
             }
             if (LoadPOSDll.POS_StartDoc())
             {
-                byte[] by_SendData = System.Text.Encoding.Default.GetBytes("test print\r\n");
+                string strs = "";
+                for(int i = 0; i < contents.Length; i++)
+                {
+                    strs = strs+contents[i] + "\n";
+                }
+                byte[] by_SendData = System.Text.Encoding.Default.GetBytes(strs);
                 LoadPOSDll.POS_WriteFile(PosPrint.POS_IntPtr, by_SendData, (uint)by_SendData.Length);
                 LoadPOSDll.POS_WriteFile(PosPrint.POS_IntPtr, new byte[] { 0x0a }, 1);
+                LoadPOSDll.POS_CutPaper(1,1);
                 LoadPOSDll.POS_EndDoc();
             }
 

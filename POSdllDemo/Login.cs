@@ -51,8 +51,8 @@ namespace GprinterDEMO
         {
             try
             {
-                string LoginUrl = "http://192.168.1.103:8900/api/v1/web/login";
-                string UserInfoUrl = "http://192.168.1.103:8900/api/v1/web/sysUser/info";
+                string LoginUrl = "https://mtms.letsit.vip/api/v1/web/login";
+                string UserInfoUrl = "https://mtms.letsit.vip/api/v1/web/sysUser/info";
                 String account, password;
                 account = this.textBox_account.Text;
                 password = this.textBox_password.Text;
@@ -65,6 +65,9 @@ namespace GprinterDEMO
                 // 接下来获取个人信息
                 Dictionary<string, object> UserInfo = String2Dict(GetHttpResponse(UserInfoUrl, (string)responseResult["token"]));
                 string ShopId = (string)UserInfo["shopId"];
+                DB.DataSet.Topic = "prod/printer/" + ShopId;
+                DB.DataSet.Token = (string)responseResult["token"];
+                DB.SyncConfigFile(DB.DataSet);
                 Console.WriteLine(ShopId);
                 // todo 更新json "mtms/prod/localprinte/shop/" + ShopId
                 return true;
